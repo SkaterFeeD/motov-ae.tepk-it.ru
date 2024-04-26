@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
 use App\Http\Requests\FilmCreateRequest;
+use App\Http\Requests\FilmUpdateRequest;
 use App\Models\Film;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FilmController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $films = Film::all();
         return response()->json($films)->setStatusCode(200);
     }
@@ -23,9 +26,8 @@ class FilmController extends Controller
         return response()->json($films)->setStatusCode(200);
     }
 
-
-
-    // - Работает весьма благополучно
+    // Работает весьма благополучно
+    // Создание фильма
     public function create(FilmCreateRequest $request)
     {
         $film = new Film($request->all());
@@ -38,38 +40,53 @@ class FilmController extends Controller
             $film->photo = $fileName;
             $film->save();
         }
-
         return response()->json($film)->setStatusCode(201);
     }
 
-
-    // - Не работает весьма благополучно
-    public function update(Request $request, $id)
+    // Обновление фильма
+    // Не работает весьма благополучно
+    public function update(FilmUpdateRequest $request, $id)
     {
-        // Находим фильм по его ID
-        $films = Film::find($id);
-
-        // Если фильм не найден, выбрасываем исключение с кодом 404
-        if (!$films) {
+        $film = Film::find($id);
+        if (!$film) {
             throw new ApiException(404, 'Фильм не найден');
         }
+        // Обновляем атрибуты фильма с данными из запроса, исключая поле 'photo'
+        $film->update($request->except('photo'));
 
-        // Валидация данных, полученных из запроса
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:128',
-            'duration' => 'required|integer',
-            'description' => 'required|string',
-            'year' => 'required|integer',
-
-        ]);
-
-        // Обновляем данные фильма на основе валидированных данных
-        $films->update($validatedData);
-
-        // Возвращаем успешный ответ с обновленными данными фильма
-        return response(['data' => $films, 'message' => 'Фильм успешно обновлен'], 200);
+        // Проверяем наличие нового файла фотографии в запросе
+        if ($request->hasFile('photo')) {
+            // Получаем расширение нового файла
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            // Генерируем имя нового файла
+            $fileName = 'films/' . $film->id . '.' . $extension;
+            // Сохраняем новый файл
+            $request->file('photo')->storeAs('public', $fileName);
+            // Удаляем предыдущий файл фотографии, если он существует
+            if ($film->photo) {
+                Storage::delete('public/' . $film->photo);
+            }
+            // Обновляем ссылку на фотографию в модели фильма
+            $film->photo = $fileName;
+        }
+        $film->save();
+        // Возвращаем обновленный фильм
+        return response()->json($film)->setStatusCode(200);
     }
 
-
-
+    public function destroy($id)
+    {
+        $film = Film::find($id);
+        if (!$film) {
+            throw new ApiException(404, 'Фильм не найден');
+        }
+        // Удаляем фотографию фильма, если она существует
+        if ($film->photo) {
+            Storage::delete('public/' . $film->photo);
+        }
+        // Удаляем фильм из базы данных
+        $film->delete();
+        // Возвращаем успешный ответ
+        return response()->json(['message' => 'Фильм успешно удален'])->setStatusCode(200);
+    }
 }

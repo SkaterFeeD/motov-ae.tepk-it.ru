@@ -4,9 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FilmCreateRequest extends ApiRequest
+class FilmUpdateRequest extends ApiRequest
 {
-
+    /**
+     * Determine if the user is authorized to make this request.
+     */
     public function authorize(): bool
     {
         return true;
@@ -20,12 +22,12 @@ class FilmCreateRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'duration' => 'required|string',
-            'description' => 'required|string',
-            'year' => 'required|integer',
-            'country' => 'required|string',
-            'director' => 'required|string',
+            'name' => 'string',
+            'duration' => 'string',
+            'description' => 'string',
+            'year' => 'integer',
+            'country' => 'string',
+            'director' => 'string',
             'photo' => 'file|mimes:jpg,png,webp,jpeg,svg',
         ];
     }
