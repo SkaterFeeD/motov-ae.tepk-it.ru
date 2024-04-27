@@ -17,12 +17,10 @@ class User extends Model
     public function role() {
         return $this->belongsTo(Role::class);
     }
-    public function ticket(){
+    public function ticket() {
         return $this->hasMany(Ticket::class);
     }
-    public function order(){
+    public function order() {
         return $this->hasMany(Order::class);
     }
-    // belongsTo - цепляемся
-    // hasMany - присасывается
 }

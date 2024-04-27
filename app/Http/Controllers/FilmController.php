@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\ApiException;
 use App\Http\Requests\FilmCreateRequest;
 use App\Http\Requests\FilmUpdateRequest;
+use App\Http\Resources\FilmResource;
 use App\Models\Film;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +15,7 @@ class FilmController extends Controller
     public function index()
     {
         $films = Film::all();
-        return response()->json($films)->setStatusCode(200);
+        return response()->json(FilmResource::collection($films))->setStatusCode(200);
     }
 
     public function show($id)
@@ -44,7 +45,7 @@ class FilmController extends Controller
     }
 
     // Обновление фильма
-    // Не работает весьма благополучно
+    // Работает весьма благополучно
     public function update(FilmUpdateRequest $request, $id)
     {
         $film = Film::find($id);
@@ -60,12 +61,12 @@ class FilmController extends Controller
             $extension = $request->file('photo')->getClientOriginalExtension();
             // Генерируем имя нового файла
             $fileName = 'films/' . $film->id . '.' . $extension;
-            // Сохраняем новый файл
-            $request->file('photo')->storeAs('public', $fileName);
             // Удаляем предыдущий файл фотографии, если он существует
             if ($film->photo) {
                 Storage::delete('public/' . $film->photo);
             }
+            // Сохраняем новый файл
+            $request->file('photo')->storeAs('public', $fileName);
             // Обновляем ссылку на фотографию в модели фильма
             $film->photo = $fileName;
         }

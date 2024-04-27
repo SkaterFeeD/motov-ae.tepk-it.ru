@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\SessionController;
 
 
 /*
@@ -30,9 +31,7 @@ Route::post('/login' , [AuthController::class, 'login' ]);
 Route::middleware('auth:api')->get('/logout', [AuthController::class, 'logout']);
 
 
-// Функционал пользователя
-// Просмотр всех фильмов
-Route::get('/film' , [FilmController::class, 'index' ]);
+
 
 // Функционал администратора
 Route::middleware('auth:api', 'role:admin')->group(function () {
@@ -43,25 +42,38 @@ Route::middleware('auth:api', 'role:admin')->group(function () {
 // Создание жанра
 Route::post('/genre' , [GenreController::class, 'create' ]);
 // Обновление жанра
-Route::patch('/genre' , [GenreController::class, 'create' ]); // - не сделано
+Route::post('/genre/{id}' , [GenreController::class, 'update' ]); // - не сделано
+// Удаление жанра
+Route::delete('/genre/{id}' , [GenreController::class, 'destroy' ]);
+
 // Добавление фильма
 Route::post('/film', [FilmController::class, 'create']);
-// Обновление конкретного фильма
-Route::post('/film/{id}' , [FilmController::class, 'update' ]); // - фотки выдают проблемы и остаются
-// Удаление конкретного фильма
+// Обновление фильма
+Route::post('/film/{id}' , [FilmController::class, 'update' ]); // - фотки выдают проблемы и остаются - пока работает
+// Удаление фильма
 Route::delete('/film/{id}' , [FilmController::class, 'destroy' ]);
 
-// Просмотр жанров
-Route::get('/genre' , [GenreController::class, 'index' ]);
+// Добавление сеанса
+Route::post('/session' , [SessionController::class, 'create' ]);
+// Обновление сеанса
+Route::patch('/session' , [SessionController::class, 'update' ]);
+// Удаление сеанса
+Route::delete('/session' , [SessionController::class, 'destroy' ]);
 
-// Удаление жанра
-Route::delete('/film/{id}' , [FilmController::class, 'destroy' ]);
+
 // Функционал менеджера
 
+
+
 // Функционал пользователя
+// Просмотр всех фильмов
+Route::get('/film' , [FilmController::class, 'index' ]);
 // Просмотр конкретного фильма
 Route::get('/film/{id}' , [FilmController::class, 'show' ]);
-
+// Просмотр жанров
+Route::get('/genre' , [GenreController::class, 'index' ]);
+// Просмотр сеансов
+Route::get('/session' , [SessionController::class, 'index' ]);
 
 
 

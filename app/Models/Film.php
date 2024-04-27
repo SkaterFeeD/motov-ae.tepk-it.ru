@@ -11,10 +11,10 @@ class Film extends Model
 
     protected $fillable = ['name', 'duration', 'description', 'year', 'country', 'director', 'genre_id'];
 
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
     public function session(){
         return $this->hasMany(Session::class);
+    }
+    public function genre() {
+        return $this->belongsTo(Genre::class);
     }
 }

@@ -14,7 +14,7 @@ class Session extends Model
     public function hall(){
         return $this->belongsTo(Hall::class);
     }
-    public function session(){
+    public function session_status(){
         return $this->belongsTo(Session_status::class);
     }
     public function film(){
