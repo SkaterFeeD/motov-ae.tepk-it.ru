@@ -14,7 +14,7 @@ class Hall extends Model
     public function session(){
         return $this->hasMany(Session::class);
     }
-    public function typehall(){
+    public function type_hall(){
         return $this->belongsTo(Type_hall::class);
     }
 }
