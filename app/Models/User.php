@@ -11,8 +11,6 @@ class User extends Model
 
     protected $fillable = ['name', 'surname', 'patronymic', 'phone_number', 'birth', 'login', 'password', 'email', 'api_token', 'role_id'];
 
-    // Прячем
-    protected $hidden = ['password'];
 
     public function role() {
         return $this->belongsTo(Role::class);

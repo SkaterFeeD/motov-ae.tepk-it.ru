@@ -6,6 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TypeHallController;
+use App\Http\Controllers\SessionStatusController;
 
 
 /*
@@ -56,11 +59,18 @@ Route::delete('/film/{id}' , [FilmController::class, 'destroy' ]);
 // Добавление сеанса
 Route::post('/session' , [SessionController::class, 'create' ]);
 // Обновление сеанса
-Route::patch('/session' , [SessionController::class, 'update' ]);
+Route::post('/session/{id}' , [SessionController::class, 'update' ]);
 // Удаление сеанса
-Route::delete('/session' , [SessionController::class, 'destroy' ]);
+Route::delete('/session/{id}' , [SessionController::class, 'destroy' ]);
 
-
+// Вывод всех пользователей
+Route::get('/users' , [UserController::class, 'index' ]);
+// Вывод одного пользователя
+Route::get('/users/{id}' , [UserController::class, 'show' ]);
+// Вывод авторизированного пользователя
+Route::middleware('auth:api')->get('/user', [UserController::class, 'auth']);
+// Изменение данных авторизированного пользователя
+Route::middleware('auth:api')->post('/user/update', [UserController::class, 'update']);
 // Функционал менеджера
 
 
@@ -74,7 +84,9 @@ Route::get('/film/{id}' , [FilmController::class, 'show' ]);
 Route::get('/genre' , [GenreController::class, 'index' ]);
 // Просмотр сеансов
 Route::get('/session' , [SessionController::class, 'index' ]);
-
-
+// Просмотр всех залов
+Route::get('/typehall' , [TypeHallController::class, 'index' ]);
+// Просмотр статусов сессий
+Route::get('/sessionstatuses' , [SessionStatusController::class, 'index' ]);
 
 

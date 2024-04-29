@@ -24,14 +24,19 @@ class SessionCreateRequest extends ApiRequest
         return [
             'time_start' => 'required|date',
             'time_end' => 'required|date',
+            'session_status_id' => 'required|integer',
+            'film_id' => 'required|integer',
+            'hall_id' => 'required|integer',
         ];
     }
     public function messages()
     {
         return [
             'time_start.required' => 'Поле "Время начала" обязательно для заполнения.',
-
             'time_end.required' => 'Поле "Время окончания" обязательно для заполнения.',
+            'session_status_id.required' => 'Поле "Статус сеанса" обязательно для заполнения.',
+            'film_id.required' => 'Поле "Фильм" обязательно для заполнения.',
+            'hall_id.required' => 'Поле "Зал" обязательно для заполнения.',
         ];
     }
 }

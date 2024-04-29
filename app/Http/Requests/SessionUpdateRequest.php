@@ -24,6 +24,9 @@ class SessionUpdateRequest extends ApiRequest
         return [
             'time_start' => 'date',
             'time_end' => 'date',
+            'session_status_id' => 'integer',
+            'film_id' => 'integer',
+            'hall_id' => 'integer',
         ];
     }
 }
