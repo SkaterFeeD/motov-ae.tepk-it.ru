@@ -16,7 +16,8 @@ class HallResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'type_hall_id' => $this->name,
+            // 'type_hall_id' => $this->name,
+            'hall_id' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

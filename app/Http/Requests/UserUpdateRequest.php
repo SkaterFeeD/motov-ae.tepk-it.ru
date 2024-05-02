@@ -27,7 +27,7 @@ class UserUpdateRequest extends ApiRequest
             'patronymic' => 'string|min:1|max:32|nullable',
             'phone_number' => 'string|min:6|max:12|unique',
             'birth' => 'date',
-            'login' => 'string|min:5|max:32|unique',
+            'login' => 'string|min:4|max:32|unique',
             'password' => 'string|min:8|max:32',
             'email' => 'email|min:5|max:32|unique',
         ];

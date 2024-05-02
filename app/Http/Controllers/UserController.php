@@ -61,13 +61,16 @@ class UserController extends Controller
             'patronymic' => 'string|max:255',
             'email' => 'email|max:255|unique:users,email,'.$user->id,
             'login' => 'string|max:255|unique:users,login,'.$user->id,
-            'password' => 'string|min:6|max:255', // Подтверждение пароля может быть добавлено при необходимости
+            'password' => 'string|min:8|max:255', // Подтверждение пароля может быть добавлено при необходимости
             'phone_number' => 'string|max:255',
             'birth' => 'date',
         ]);
 
+        // Проверяем, имеет ли пользователь роль администратора
+        unset($validatedData['role_id']);
+
         // Обновляем данные пользователя
-        $user->update($request->all());
+        $user->update($validatedData);
 
         // Возвращаем успешный ответ
         return response()->json($user)->setStatusCode(200);

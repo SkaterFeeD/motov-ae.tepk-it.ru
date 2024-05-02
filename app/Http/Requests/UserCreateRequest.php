@@ -27,7 +27,7 @@ class UserCreateRequest extends ApiRequest
             'patronymic' => 'string|min:1|max:32|nullable',
             'phone_number' => 'required|string|min:6|max:12|unique:users,phone_number',
             'birth' => 'required|date',
-            'login' => 'required|string|min:5|max:32|unique:users,login',
+            'login' => 'required|string|min:4|max:32|unique:users,login',
             'password' => 'required|string|min:8|max:32',
             'email' => 'required|email|min:5|max:32|unique:users,email',
         ];

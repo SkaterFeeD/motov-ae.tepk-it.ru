@@ -57,8 +57,9 @@ class AuthController extends Controller
     public function register(UserCreateRequest $request)
     {
         // Создаем нового пользователя с предоставленными данными
-        $user = new User($request->all());
+        $user = new User($request->except('role_id')); // Исключаем поле роли из запроса
         $user->save();
+
         return response([
             'message' => 'Регистрация прошла успешно'
         ], 200);

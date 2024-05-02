@@ -9,6 +9,8 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TypeHallController;
 use App\Http\Controllers\SessionStatusController;
+use App\Http\Controllers\HallController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -67,10 +69,22 @@ Route::delete('/session/{id}' , [SessionController::class, 'destroy' ]);
 Route::get('/users' , [UserController::class, 'index' ]);
 // Вывод одного пользователя
 Route::get('/users/{id}' , [UserController::class, 'show' ]);
+// Получение списка заллов
+Route::get('/hall', [HallController::class, 'index']);
+// Создание пользователя администратором
+Route::post('/user/create', [AdminController::class, 'create']);
+// Редактирование пользователя администратором
+Route::post('/user/update/{id}', [AdminController::class, 'update']);
+// Удаление пользователя администратором
+Route::delete('/user/delete/{id}', [AdminController::class, 'destroy']);
+
+
+
 // Вывод авторизированного пользователя
 Route::middleware('auth:api')->get('/user', [UserController::class, 'auth']);
 // Изменение данных авторизированного пользователя
 Route::middleware('auth:api')->post('/user/update', [UserController::class, 'update']);
+
 // Функционал менеджера
 
 
