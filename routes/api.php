@@ -11,6 +11,9 @@ use App\Http\Controllers\TypeHallController;
 use App\Http\Controllers\SessionStatusController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TicketController;
 
 
 /*
@@ -42,6 +45,7 @@ Route::middleware('auth:api')->get('/logout', [AuthController::class, 'logout'])
 Route::middleware('auth:api', 'role:admin')->group(function () {
 
 });
+
 
 // Функционал администратора
 // Создание жанра
@@ -86,6 +90,26 @@ Route::middleware('auth:api')->get('/user', [UserController::class, 'auth']);
 Route::middleware('auth:api')->post('/user/update', [UserController::class, 'update']);
 
 // Функционал менеджера
+Route::middleware('auth:api', 'role:manager')->group(function () {
+
+});
+
+// Функционал менеджера
+// Добавление продукта
+Route::post('/product' , [ProductController::class, 'create' ]);
+// Обновление продукта
+Route::post('/product/{id}' , [ProductController::class, 'update' ]);
+// Удаление продукта
+Route::delete('/product/{id}' , [ProductController::class, 'destroy' ]);
+// Просмотр билетов
+Route::get('/ticket' , [TicketController::class, 'index' ]);
+// Создание билета - МОЖЕТ И ПОЛЬЗОВАТЕЛЬ - ОЙ НЮАНСЫ - ОЙ КОРОЧЕ PRICE удалить в таблице tickets
+Route::post('/ticket' , [TicketController::class, 'create' ]);
+//
+
+
+
+
 
 
 
@@ -104,3 +128,5 @@ Route::get('/typehall' , [TypeHallController::class, 'index' ]);
 Route::get('/sessionstatuses' , [SessionStatusController::class, 'index' ]);
 
 
+// Просмотр продуктов
+Route::get('/product' , [ProductController::class, 'index' ]);

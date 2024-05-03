@@ -9,7 +9,7 @@ class Hall extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['row_quantity', 'place_quantity', 'type_hall_id'];
+    protected $fillable = ['row_quantity', 'place_quantity', 'type_hall_id',  'price'];
 
     public function session(){
         return $this->hasMany(Session::class);

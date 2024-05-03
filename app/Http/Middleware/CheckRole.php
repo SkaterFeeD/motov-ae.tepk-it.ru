@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Role;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,8 @@ class CheckRole
             }
         }
 
-        return response()->json(['error' => 'Unauthorized'], 403);
+
+        return response()->json(['error' => 'Forbidden for you'], 403);
+
     }
 }

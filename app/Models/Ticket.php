@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['session_time', 'price', 'seat_number', 'user_id', 'session_id'];
+    protected $fillable = ['price', 'seat_number', 'user_id', 'session_id'];
 
     public function user(){
         return $this->belongsTo(User::class);
