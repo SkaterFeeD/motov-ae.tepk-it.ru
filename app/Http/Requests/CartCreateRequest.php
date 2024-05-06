@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SessionUpdateRequest extends ApiRequest
+class CartCreateRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->role->code === 'manager';
+        return true;
     }
 
     /**
@@ -22,11 +22,7 @@ class SessionUpdateRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'time_start' => 'date',
-            'time_end' => 'date',
-            'session_status_id' => 'integer',
-            'film_id' => 'integer',
-            'hall_id' => 'integer',
+            'quantity' => 'required|integer'
         ];
     }
 }

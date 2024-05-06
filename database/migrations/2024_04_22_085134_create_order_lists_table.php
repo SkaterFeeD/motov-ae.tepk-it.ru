@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('order_lists', function (Blueprint $table) {
             $table->id();
-            $table->decimal('price',6,2);
             $table->integer('quantity');
+            $table->decimal('price',8,2);
 
-            $table->foreignId('product_id')->constrained()->onUpdate('cascade');
             $table->foreignId('order_id')->constrained()->onUpdate('cascade');
-
+            $table->foreignId('product_id')->constrained()->onUpdate('cascade');
 
             $table->timestamps();
         });

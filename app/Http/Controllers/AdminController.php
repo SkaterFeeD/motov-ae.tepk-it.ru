@@ -20,10 +20,10 @@ class AdminController extends Controller
             'patronymic' => 'string|max:255',
             'email' => 'email|max:255|unique:users,email,'.$user->id,
             'login' => 'string|max:255|unique:users,login,'.$user->id,
-            'password' => 'string|min:8|max:255', // Подтверждение пароля может быть добавлено при необходимости
+            'password' => 'string|min:8|max:255',
             'phone_number' => 'string|max:255',
             'birth' => 'date',
-            'role_id' => 'integer|exists:roles,id', // Убедитесь, что в вашей системе существует таблица ролей
+            'role_id' => 'integer|exists:roles,id',
         ]);
 
         // Обновляем данные пользователя

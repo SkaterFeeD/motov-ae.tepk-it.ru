@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
+
     public function index()
     {
         $genres = Genre::all();
@@ -37,12 +38,10 @@ class GenreController extends Controller
         if (!$genre) {
             return response()->json(['message' => 'Жанр не найден'], 404);
         }
-        // Валидация входных данных
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:32',
-        ]);
+
         // Обновляем атрибуты жанра
-        $genre->update($validatedData);
+        $genre->update($request->all());
+
         // Возвращаем успешный ответ с обновленным жанром
         return response()->json($genre, 200);
     }

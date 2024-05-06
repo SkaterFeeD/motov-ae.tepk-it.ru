@@ -16,6 +16,16 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json($products)->setStatusCode(200);
     }
+
+    public function show($id)
+    {
+        $products = Product::find($id);
+        if (!$products) {
+            throw new ApiException(404, 'Продукт не найден');
+        }
+        return response()->json($products)->setStatusCode(200);
+    }
+
     public function create(ProductCreateRequest $request)
     {
         $product = new Product($request->all());

@@ -11,7 +11,7 @@ class GenreUpdateRequest extends ApiRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->role->code === 'admin';
     }
 
     /**

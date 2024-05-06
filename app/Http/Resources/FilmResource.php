@@ -23,6 +23,7 @@ class FilmResource extends JsonResource
             'country' => $this->country,
             'director' => $this->director,
             'genreName' => $this->genre->name,
+            'genre_id' => $this->genre->id,
             'photo' => $this->photo,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

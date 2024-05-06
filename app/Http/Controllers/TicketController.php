@@ -10,7 +10,16 @@ class TicketController extends Controller
 {
     public function index()
     {
-        $tickets = Ticket::with('session', 'session.hall:id,price')->get();
+        $tickets = Ticket::with('session', 'session.hall:id,price')->get()->map(function ($ticket) {
+            return [
+                'ticket_id' => $ticket->id,
+                'seat_number' => $ticket->seat_number,
+                'user_id' => $ticket->user_id,
+                'session_id' => $ticket->session_id,
+                'price' => $ticket->session->hall->price,
+            ];
+        });
+
         return response()->json($tickets)->setStatusCode(200);
     }
 

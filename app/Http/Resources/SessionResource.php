@@ -19,7 +19,7 @@ class SessionResource extends JsonResource
             'time_start' => $this->time_start,
             'time_end' => $this->time_end,
             'sessions' => $this->session_status->name,
-            'film' => $this->film->name,
+            'film' => $this->film_id,
             'hall' => $this->hall_id,
             // 'type_hall' => $this->hall->type_hall->name,
             'created_at' => $this->created_at,
