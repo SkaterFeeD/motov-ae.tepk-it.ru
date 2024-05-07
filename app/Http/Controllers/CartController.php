@@ -17,10 +17,12 @@ class CartController extends Controller
     // Создание корзины
     public function create(CartCreateRequest $request) {
         $user = Auth::user();
+        $order = Order::create();
         $cart = Cart::create([
             'user_id' => $user->id,
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
+            'datetime' => $order->datetime,
         ]);
 
         return response()->json(new CartResource($cart))->setStatusCode(201);
@@ -64,7 +66,7 @@ class CartController extends Controller
 
     // Удаление корзины
     public function destroy($id) {
-        $cart = Cart::where('user_id', Auth::user()->id)->get();
+        $cart = Cart::where('user_id', Auth::user()->id)->destroy();
 
         if (!$cart) {
             return response()->json('Корзина не найдена')->setStatusCode(404, 'Not found');

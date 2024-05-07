@@ -15,6 +15,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SaleController;
 
 
 /*
@@ -116,6 +117,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
     // Просмотр билетов
     Route::get('/ticket', [TicketController::class, 'index']);
+    // Показ корзины всех пользователей для менеджера - не работает как надо
+    Route::get('/cart', [CartController::class, 'index']);
 });
 // Создание билета - МОЖЕТ И ПОЛЬЗОВАТЕЛЬ - ОЙ НЮАНСЫ - ОЙ КОРОЧЕ PRICE удалить в таблице tickets
 Route::post('/ticket', [TicketController::class, 'create']);
@@ -153,20 +156,17 @@ Route::get('/product' , [ProductController::class, 'index' ]);
 Route::get('/product/{id}' , [ProductController::class, 'show' ]);
 
 Route::middleware(['auth:api'])->group(function () {
-// Корзина
-    Route::get('/cart', [CartController::class, 'index']);
+    // Показ только своей корзины пользователю
     Route::get('/cart/my', [CartController::class, 'showByUser']);
+    // Создание корзины только для себя
     Route::post('/cart', [CartController::class, 'create']);
     // Редактирование корзины
     Route::post('/carts/{id}', [CartController::class, 'update']);
+    // Удаление корзины
+    Route::delete('/carts', [CartController::class, 'destroy']);
 });
 
-// Просмотр корзины
-Route::get('/carts/{id}', [CartController::class, 'show']);
-// Редактирование корзины
-Route::post('/carts/{id}', [CartController::class, 'update']);
-// Удаление корзины
-Route::delete('/carts/{id}', [CartController::class, 'destroy']);
+
 
 // ИНФОРМАЦИЯ ПО ПРОДАЖАМ
 // Просмотр всех продаж за период (день/месяц/год)

@@ -10,7 +10,7 @@ class ApiRequest extends FormRequest
 {
     function failedAuthorization()
     {
-        throw new ApiException(401,'Доступ закрыт');
+        throw new ApiException(403,'Доступ запрещен');
     }
     function failedValidation(Validator $validator)
     {

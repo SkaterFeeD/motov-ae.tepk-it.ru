@@ -15,13 +15,13 @@ class AdminController extends Controller
 
         // Валидация данных
         $validatedData = $request->validate([
-            'name' => 'string|max:255',
-            'surname' => 'string|max:255',
-            'patronymic' => 'string|max:255',
-            'email' => 'email|max:255|unique:users,email,'.$user->id,
-            'login' => 'string|max:255|unique:users,login,'.$user->id,
-            'password' => 'string|min:8|max:255',
-            'phone_number' => 'string|max:255',
+            'name' => 'string|min:1|max:32',
+            'surname' => 'string|min:1|max:32',
+            'patronymic' => 'string|min:1|max:32',
+            'email' => 'email|min:5|max:32|unique:users,email,'.$user->id,
+            'login' => 'string|min:4|max:32|unique:users,login,'.$user->id,
+            'password' => 'string|min:8|max:32',
+            'phone_number' => 'string|min:6|max:12',
             'birth' => 'date',
             'role_id' => 'integer|exists:roles,id',
         ]);
