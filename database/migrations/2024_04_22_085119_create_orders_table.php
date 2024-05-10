@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->dateTime('datetime')->default(now());
+            $table->dateTime('datetime');
             $table->timestamps();
         });
     }

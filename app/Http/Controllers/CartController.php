@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Order_list;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,12 +18,19 @@ class CartController extends Controller
     // Создание корзины
     public function create(CartCreateRequest $request) {
         $user = Auth::user();
-        $order = Order::create();
+
+        // Создаем новый заказ
+        $order = Order::create([
+            'user_id' => $user->id,
+            'datetime' => Carbon::now(), // Установите дату и время заказа, как вам нужно
+        ]);
+
+        // Создаем корзину и связываем ее с заказом
         $cart = Cart::create([
             'user_id' => $user->id,
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
-            'datetime' => $order->datetime,
+            'order_id' => $order->id, // Связываем корзину с заказом
         ]);
 
         return response()->json(new CartResource($cart))->setStatusCode(201);
@@ -66,13 +74,16 @@ class CartController extends Controller
 
     // Удаление корзины
     public function destroy($id) {
-        $cart = Cart::where('user_id', Auth::user()->id)->destroy();
-
+        // Находим корзину по ID и проверяем, принадлежит ли она текущему пользователю
+        $cart = Cart::where('user_id', Auth::user()->id)
+            ->where('id', $id)
+            ->first();
+        // Если корзина не найдена или не принадлежит текущему пользователю, возвращаем ошибку
         if (!$cart) {
-            return response()->json('Корзина не найдена')->setStatusCode(404, 'Not found');
+            return response()->json('Корзина не найдена или не принадлежит текущему пользователю')->setStatusCode(404, 'Not found');
         }
-
-        Cart::destroy($id);
+        $cart->delete();
+        // Возвращаем успешное сообщение об удалении корзины
         return response()->json('Корзина удалена')->setStatusCode(200, 'Удалено');
     }
 }

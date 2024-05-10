@@ -163,16 +163,14 @@ Route::middleware(['auth:api'])->group(function () {
     // Редактирование корзины
     Route::post('/carts/{id}', [CartController::class, 'update']);
     // Удаление корзины
-    Route::delete('/carts', [CartController::class, 'destroy']);
+    Route::delete('/carts/{id}', [CartController::class, 'destroy']);
 });
 
 
 
 // ИНФОРМАЦИЯ ПО ПРОДАЖАМ
 // Просмотр всех продаж за период (день/месяц/год)
-Route::post('/sales', [SaleController::class, 'getSalesByPeriod']);
+Route::get('/sales', [SaleController::class, 'getSalesByPeriod']);
 // Просмотр продаж по позиции за период (день/месяц/год)
-Route::post('/sales/{id}', [SaleController::class, 'getSalesByPeriodAndProduct']);
-// Заказы
-// Список заказов
-// Список корзины
+Route::get('/sales/{id}', [SaleController::class, 'getSalesByPeriodAndProduct']);
+

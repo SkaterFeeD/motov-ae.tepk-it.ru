@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order_list;
+use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -18,11 +20,10 @@ class SaleController extends Controller
             $date->startOfYear();
         } // else default to 'day'
 
-        $sales = Order_list::select('categories.name as category', 'products.name as product', 'order_lists.count as soldCount', 'products.price as price', 'order_lists.total as total')
-            ->join('products', 'order_lists.product_id', '=', 'products.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->join('orders', 'order_lists.order_id', '=', 'orders.id')
-            ->whereDate('orders.date', '>=', $date->toDateString())
+        $sales = Cart::select('products.name as product', 'carts.quantity as soldCount', 'products.price as price', DB::raw('carts.quantity * products.price as total'))
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->join('orders', 'carts.user_id', '=', 'orders.user_id')
+            ->whereDate('orders.datetime', '>=', $date->toDateString())
             ->get();
 
         return response()->json($sales);
@@ -39,13 +40,12 @@ class SaleController extends Controller
             $date->startOfYear();
         } // else default to 'day'
 
-        $sales = Order_list::select('categories.name as category', 'products.name as product', DB::raw('SUM(order_lists.count) as soldCount'), 'products.price as price', DB::raw('SUM(order_lists.total) as total'))
-            ->join('products', 'order_lists.product_id', '=', 'products.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->join('orders', 'order_lists.order_id', '=', 'orders.id')
-            ->whereDate('orders.date', '>=', $date->toDateString())
+        $sales = Cart::select('products.name as product', DB::raw('SUM(carts.quantity) as soldCount'), 'products.price as price', DB::raw('SUM(carts.quantity * products.price) as total'))
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->join('orders', 'carts.user_id', '=', 'orders.user_id')
+            ->whereDate('orders.datetime', '>=', $date->toDateString())
             ->where('products.id', $productId)
-            ->groupBy('categories.name', 'products.name', 'products.price')
+            ->groupBy('products.name', 'products.price')
             ->get();
 
         return response()->json($sales);

@@ -26,9 +26,7 @@ class GenreController extends Controller
     }
     public function create(GenreCreateRequest $request)
     {
-        // Создание жанра
         $genre = Genre::create($request->all());
-        // Возвращаем успешный ответ с созданным жанром
         return response()->json($genre)->setStatusCode(201);
     }
     public function update(GenreUpdateRequest $request, $id)
@@ -38,25 +36,16 @@ class GenreController extends Controller
         if (!$genre) {
             return response()->json(['message' => 'Жанр не найден'], 404);
         }
-
-        // Обновляем атрибуты жанра
         $genre->update($request->all());
-
-        // Возвращаем успешный ответ с обновленным жанром
         return response()->json($genre, 200);
     }
     public function destroy($id)
     {
-        // Находим жанр по идентификатору
         $genre = Genre::find($id);
-        // Проверяем, найден ли жанр
         if (!$genre) {
-            // Если жанр не найден, возвращаем сообщение об ошибке
             return response()->json(['message' => 'Жанр не найден'], 404);
         }
-        // Удаляем жанр
         $genre->delete();
-        // Возвращаем успешный ответ об удалении
         return response()->json(['message' => 'Жанр успешно удален'], 200);
     }
 }
